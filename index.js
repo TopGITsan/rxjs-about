@@ -36,17 +36,16 @@ loadingService.loadingStatus$.subscribe((isLoading) =>
   isLoading ? loadingOverlay.classList.add("open") : loadingOverlay.classList.remove("open")
 );
 
-// connectableObserver
-const connectedSub = multicastedInterval$.connect();
-
-multicastedInterval$
+const subOne = multicastedInterval$
   .pipe(map((val) => val % 5 === 0))
   .subscribe((status) => (status ? loadingService.showLoading() : loadingService.hideLoading()));
 
-const subOne = multicastedInterval$.subscribe(observer);
 const subTwo = multicastedInterval$.subscribe(observer);
+const subThree = multicastedInterval$.subscribe(observer);
 
 setTimeout(() => {
   console.log("unsubscribe the connected observable")
-  connectedSub.unsubscribe();
+  subOne.unsubscribe();
+  subTwo.unsubscribe();
+  subThree.unsubscribe();
 }, 15000);

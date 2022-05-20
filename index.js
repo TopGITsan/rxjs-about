@@ -4,7 +4,7 @@ import { map } from "rxjs/operators";
 
 import { subject, loadingService } from "./rx-operator/subject";
 import { observer } from "./rx-observer/observer";
-import { interval$ } from "./rx-operator/interval";
+import { interval$, multicastedInterval$ } from "./rx-operator/interval";
 
 import { loadingOverlay } from "./overlay/loadingOverlay";
 /*
@@ -31,10 +31,22 @@ const subscriptionTwo = subject.subscribe(observer);
 // ex: socket
 // interval$.subscribe(subject);
 
+// handle status change
 loadingService.loadingStatus$.subscribe((isLoading) =>
   isLoading ? loadingOverlay.classList.add("open") : loadingOverlay.classList.remove("open")
 );
 
-interval$
+// connectableObserver
+const connectedSub = multicastedInterval$.connect();
+
+multicastedInterval$
   .pipe(map((val) => val % 5 === 0))
   .subscribe((status) => (status ? loadingService.showLoading() : loadingService.hideLoading()));
+
+const subOne = multicastedInterval$.subscribe(observer);
+const subTwo = multicastedInterval$.subscribe(observer);
+
+setTimeout(() => {
+  console.log("unsubscribe the connected observable")
+  connectedSub.unsubscribe();
+}, 15000);

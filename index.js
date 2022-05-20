@@ -2,7 +2,7 @@ import { of } from "rxjs";
 
 import { map } from "rxjs/operators";
 
-import { subject, loading$ } from "./rx-operator/subject";
+import { subject, loadingService } from "./rx-operator/subject";
 import { observer } from "./rx-observer/observer";
 import { interval$ } from "./rx-operator/interval";
 
@@ -31,8 +31,10 @@ const subscriptionTwo = subject.subscribe(observer);
 // ex: socket
 // interval$.subscribe(subject);
 
-loading$.subscribe((isLoading) =>
+loadingService.loadingStatus$.subscribe((isLoading) =>
   isLoading ? loadingOverlay.classList.add("open") : loadingOverlay.classList.remove("open")
 );
 
-interval$.pipe(map((val) => val % 5 === 0)).subscribe(loading$);
+interval$
+  .pipe(map((val) => val % 5 === 0))
+  .subscribe((status) => (status ? loadingService.showLoading() : loadingService.hideLoading()));

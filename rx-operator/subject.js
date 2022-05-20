@@ -1,8 +1,8 @@
-import { Subject } from "rxjs";
+import { Subject, BehaviorSubject } from "rxjs";
 
 export const subject = new Subject();
 
-const loading$ = new Subject();
+const loading$ = new BehaviorSubject(false);
 
 export const loadingService = {
   showLoading: () => loading$.next(true),

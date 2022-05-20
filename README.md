@@ -1,6 +1,6 @@
 # RxJS Basics
 
-## What's a Subject ?
+## What is a Subject ?
     - it's an observable, so it has :
         - pipe method to add operators
         - subscribe method to receive emitted values
@@ -8,10 +8,10 @@
         - next
         - error
         - complete
-    - is multicast
-    - when you what to share state between multiple layers of your application
+    - it can multicast
+    - when you want to share state between multiple layers of your application
 ### Types of Subject
-    - BehaviorSubject - have an initial value
+    - BehaviorSubject - has an initial value
     - ReplaySubject - replays values to late subscribers
     - AsyncSubject - emits the last value before completion
 ### Multicast operators

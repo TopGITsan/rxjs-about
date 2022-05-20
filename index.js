@@ -28,3 +28,7 @@ const subscriptionTwo = subject.subscribe(observer);
 // multicast
 // ex: socket
 // interval$.subscribe(subject);
+
+loading$.subscribe((isLoading) =>
+  isLoading ? loadingOverlay.classList.add("open") : loadingOverlay.classList.remove("open")
+);

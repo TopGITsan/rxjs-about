@@ -1,0 +1,1 @@
+export const loadingOverlay =  document.getElementById('loading-overlay');

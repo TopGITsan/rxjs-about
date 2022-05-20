@@ -1,5 +1,7 @@
 import { of } from "rxjs";
 
+import { map } from "rxjs/operators";
+
 import { subject, loading$ } from "./rx-operator/subject";
 import { observer } from "./rx-observer/observer";
 import { interval$ } from "./rx-operator/interval";
@@ -32,3 +34,5 @@ const subscriptionTwo = subject.subscribe(observer);
 loading$.subscribe((isLoading) =>
   isLoading ? loadingOverlay.classList.add("open") : loadingOverlay.classList.remove("open")
 );
+
+interval$.pipe(map((val) => val % 5 === 0)).subscribe(loading$);

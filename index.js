@@ -1,9 +1,7 @@
 import { of } from "rxjs";
-import { map } from "rxjs/operators";
 
-import { subject, loadingService } from "./rx-operator/subject";
+import { cacheSubject } from "./rx-observable/subject";
 import { observer } from "./rx-observer/observer";
-import { interval$, multicastedInterval$ } from "./rx-operator/interval";
 
 import { loadingOverlay } from "./overlay/loadingOverlay";
 
@@ -75,3 +73,6 @@ setTimeout(()=>{
   console.log("not loading")
   store.updateState({ loading: false });
 },5000)
+
+cacheSubject.next('helll lllow');
+cacheSubject.subscribe(observer);

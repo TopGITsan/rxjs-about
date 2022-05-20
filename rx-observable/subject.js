@@ -1,4 +1,4 @@
-import { Subject, BehaviorSubject } from "rxjs";
+import { Subject, BehaviorSubject, ReplaySubject } from "rxjs";
 
 export const subject = new Subject();
 
@@ -9,3 +9,6 @@ export const loadingService = {
   hideLoading: () => loading$.next(false),
   loadingStatus$: loading$.asObservable(),
 };
+
+
+export const cacheSubject = new ReplaySubject();

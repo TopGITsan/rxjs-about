@@ -78,5 +78,6 @@ cacheSubject.next("helll lllow");
 cacheSubject.subscribe(observer);
 
 // schedulers
-asyncScheduler.schedule(console.log, 2500,"Hello async scheduler");
-console.log("sync log");
+const subAsync = asyncScheduler.schedule(console.log, 2500,"Hello async scheduler");
+console.log("synchronous log");
+subAsync.unsubscribe();

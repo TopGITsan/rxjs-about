@@ -41,9 +41,9 @@
 
 - each scheduler accepts 3 arguments:
     - work (the function to invoke)
-    - delay (the time to wait before performing the work)
+    - delay(*optional*) (the time to wait before performing the work)
         - provinding the delay argument to others schedulers except asyncScheduler will simply cause a scheduler to default to asyncScheduler behind the scenes
-    - state (which is provided to the work function)
+    - state(*optional*) (which is provided to the work function)
     
 ```
 asyncScheduler.schedule(()=> console.log('async'),200);

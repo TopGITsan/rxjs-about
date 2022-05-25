@@ -78,6 +78,13 @@ cacheSubject.next("helll lllow");
 cacheSubject.subscribe(observer);
 
 // schedulers
-const subAsync = asyncScheduler.schedule(console.log, 2500,"Hello async scheduler");
+
+// const subAsync = asyncScheduler.schedule(console.log, 2500,"Hello async scheduler");
+// subAsync.unsubscribe();
+
+of(1,2,3).subscribe(observer);
 console.log("synchronous log");
-subAsync.unsubscribe();
+// next val:  1
+// next val:  2
+// next val:  3
+// index.js:86 synchronous log

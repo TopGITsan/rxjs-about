@@ -20,6 +20,10 @@
     - multicast
 
 ## Schedulers
+
+![schedulers](/image/schedulers/schedulers.png)
+    
+
     - are used with operators and subscriptions in order to influence how and when your code is executed ( when to emit or subscribe ) :
         - observeOn, subscribeOn
     - are used for time based operations and operators

@@ -89,6 +89,7 @@ cacheSubject.subscribe(observer);
 // scheduled([4,5,6], asyncScheduler).subscribe(observer);
 // or
 of(4,5,6).pipe(
+  // better use delay!
   observeOn(asyncScheduler,3000) // introduce schedulers at any point in the operator chain
 ).subscribe(observer);
 // 

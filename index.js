@@ -61,7 +61,7 @@ const store = new ObservableStore(initialState);
 store.selectState("user").subscribe(console.log);
 store
   .selectState("loading")
-  .subscribe(isLoading =>
+  .subscribe((isLoading) =>
     isLoading ? loadingOverlay.classList.add("open") : loadingOverlay.classList.remove("open")
   );
 
@@ -69,15 +69,14 @@ store.updateState({ user: "Joe" });
 
 store.updateState({ loading: true });
 
-setTimeout(()=>{
-  console.log("not loading")
+setTimeout(() => {
+  console.log("not loading");
   store.updateState({ loading: false });
-},5000)
+}, 5000);
 
-cacheSubject.next('helll lllow');
+cacheSubject.next("helll lllow");
 cacheSubject.subscribe(observer);
 
 // schedulers
-asyncScheduler.schedule(()=> console.log("Hello async scheduler"))
+asyncScheduler.schedule(() => console.log("Hello async scheduler"), 3000);
 console.log("sync log");
-

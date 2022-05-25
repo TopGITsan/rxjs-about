@@ -52,7 +52,7 @@ asyncScheduler.schedule(console.log, 200, 'async');
 
 asapScheduler.schedule(console.log, null, 'microtask');
 
-animationFramScheduler.schedule(console.log, null, 'aframe');
+animationFrameScheduler.schedule(console.log, null, 'aframe');
 
 queueScheduler.schedule(()=> { // usefull when you need to schedule tasks inside other tasks })
 ```
@@ -92,3 +92,5 @@ of(1,2,3).pipe(
     - do not use microtasks for long running operations
     - microtasks in JS run after currently executing code but will **block** *the UI like synchronous task* until they complete (queue is cleared), this also counts for microtasks that are added while others are running
     - is not a silver bullet for asynchronous activity.
+
+- **animationFrameScheduler**: let's you schedule tasks before browser repaint to help create smooth animations

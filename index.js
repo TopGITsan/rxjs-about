@@ -1,4 +1,4 @@
-import { asapScheduler, async, asyncScheduler, of, range, scheduled } from "rxjs";
+import { animationFrameScheduler, asapScheduler, async, asyncScheduler, interval, of, range, scheduled } from "rxjs";
 
 import { cacheSubject } from "./rx-observable/subject";
 import { observer } from "./rx-observer/observer";
@@ -8,8 +8,9 @@ import { loadingOverlay } from "./overlay/loadingOverlay";
 import { ObservableStore } from "./store/store";
 
 import { counter } from "./counter/counter";
+import { ball } from "./ball/ball";
 
-import { observeOn, subscribeOn, tap } from "rxjs/operators";
+import { observeOn, subscribeOn, takeWhile, tap } from "rxjs/operators";
 /*
  * Any code samples you want to play with can go in this file.
  * Updates will trigger a live reload on http://localhost:1234/
@@ -84,7 +85,7 @@ cacheSubject.subscribe(observer);
 // schedulers
 
 // async
-const subAsync = asyncScheduler.schedule(console.log, 2500, "Hello ASYNC scheduler");
+const subAsync = asyncScheduler.schedule(console.log, 0, "Hello ASYNC scheduler");
 // subAsync.unsubscribe();
 
 // deprecated
@@ -114,7 +115,7 @@ asapScheduler.schedule(() => console.log("asapScheduler"));
 // microtask
 queueMicrotask(() => console.log("From microtask"));
 // promise handlers utilise the microtask queue which runs after currently executed synchronous code
-Promise.resolve("From promise").then(console.log);
+// Promise.resolve("From promise").then(console.log);
 
 // creation operator
 // range(1,5, asapScheduler).subscribe(observer);
@@ -130,9 +131,29 @@ Promise.resolve("From promise").then(console.log);
 //   counter.innerHTML = val;
 // });
 
-// 
-range(1, 100000, asyncScheduler).subscribe((val) => {
-  counter.innerHTML = val;
+// using asap to not block the render of the counter inner HTML 
+// range(1, 100000, asyncScheduler).subscribe((val) => {
+//   counter.innerHTML = val;
+// });
+
+// synchronous
+// console.log("Synchronous log");
+
+
+// animationFrame
+
+// recursively schedule a task
+// animationFrameScheduler.schedule(function(pos){
+//   ball.style.transform = `translate3d(0, ${pos}px, 0`;
+//   pos <= 300 ? this.schedule(pos +1): null
+// },0,0)
+
+// refactor using rxjs
+interval(0, animationFrameScheduler).pipe(
+  takeWhile(val => val <= 300),
+  // tap(val=> console.log("From animationFrame", val))
+).subscribe(val => {
+  ball.style.transform = `translate3d(0, ${val}px, 0`;
 });
 
 // synchronous

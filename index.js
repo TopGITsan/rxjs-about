@@ -1,4 +1,4 @@
-import { of } from "rxjs";
+import { asyncScheduler, of } from "rxjs";
 
 import { cacheSubject } from "./rx-observable/subject";
 import { observer } from "./rx-observer/observer";
@@ -76,3 +76,8 @@ setTimeout(()=>{
 
 cacheSubject.next('helll lllow');
 cacheSubject.subscribe(observer);
+
+// schedulers
+asyncScheduler.schedule(()=> console.log("Hello async scheduler"))
+console.log("sync log");
+

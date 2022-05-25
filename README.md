@@ -24,3 +24,20 @@
         - observeOn, subscribeOn
     - are used for time based operations and operators
     - are user in testing
+
+    - each scheduler accepts 3 arguments:
+        - work (the function to invoke)
+        - delay (the time to wait before performing the work)
+        - state (which is provided to the work function)
+        - provinding the delay argument to others schedulers exept asyncScheduler will simply cause a scheduler to default to asyncScheduler behind the scenes
+```
+asyncScheduler.schedule(()=> console.log('async'),200);
+// or
+asyncScheduler.schedule(console.log, 200, 'async');
+
+asapScheduler.schedule(console.log, null, 'microtask');
+
+animationFramScheduler.schedule(console.log, null, 'aframe');
+
+queueScheduler.schedule(()=> { // usefull when you need to schedule tasks inside other tasks })
+```

@@ -1,4 +1,4 @@
-# RxJS Basics :star_struck:
+# ![rxjs](/image/rxjs.svg) RxJS Basics :star_struck:
 
 ## What is a Subject ?
 

@@ -1,4 +1,4 @@
-import { asyncScheduler, of } from "rxjs";
+import { asyncScheduler, of, scheduled } from "rxjs";
 
 import { cacheSubject } from "./rx-observable/subject";
 import { observer } from "./rx-observer/observer";
@@ -82,9 +82,16 @@ cacheSubject.subscribe(observer);
 // const subAsync = asyncScheduler.schedule(console.log, 2500,"Hello async scheduler");
 // subAsync.unsubscribe();
 
+// deprecated
+// of(4,5,6, asyncScheduler).subscribe(observer);
+// use scheduled
+scheduled([4,5,6], asyncScheduler).subscribe(observer);
 of(1,2,3).subscribe(observer);
 console.log("synchronous log");
 // next val:  1
 // next val:  2
 // next val:  3
 // index.js:86 synchronous log
+// next val:  4
+// next val:  5
+// next val:  6

@@ -1,4 +1,4 @@
-import { asyncScheduler, of, scheduled } from "rxjs";
+import { asapScheduler, async, asyncScheduler, of, range, scheduled } from "rxjs";
 
 import { cacheSubject } from "./rx-observable/subject";
 import { observer } from "./rx-observer/observer";
@@ -6,6 +6,9 @@ import { observer } from "./rx-observer/observer";
 import { loadingOverlay } from "./overlay/loadingOverlay";
 
 import { ObservableStore } from "./store/store";
+
+import { counter } from "./counter/counter";
+
 import { observeOn, subscribeOn, tap } from "rxjs/operators";
 /*
  * Any code samples you want to play with can go in this file.
@@ -68,19 +71,20 @@ store
 
 store.updateState({ user: "Joe" });
 
-store.updateState({ loading: true });
+// store.updateState({ loading: true });
 
-setTimeout(() => {
-  console.log("not loading");
-  store.updateState({ loading: false });
-}, 5000);
+// setTimeout(() => {
+//   console.log("not loading");
+//   store.updateState({ loading: false });
+// }, 5000);
 
 cacheSubject.next("helll lllow");
 cacheSubject.subscribe(observer);
 
 // schedulers
 
-// const subAsync = asyncScheduler.schedule(console.log, 2500,"Hello async scheduler");
+// async
+const subAsync = asyncScheduler.schedule(console.log, 2500, "Hello ASYNC scheduler");
 // subAsync.unsubscribe();
 
 // deprecated
@@ -88,13 +92,13 @@ cacheSubject.subscribe(observer);
 // use scheduled
 // scheduled([4,5,6], asyncScheduler).subscribe(observer);
 // or
-of(4,5,6).pipe(
-  tap(val => console.log('from tap: ',val)),
-  subscribeOn(asyncScheduler,3000) // introduce schedulers at any point in the operator chain
-).subscribe(observer);
-// 
+// of(4,5,6).pipe(
+//   tap(val => console.log('from tap: ',val)),
+//   subscribeOn(asyncScheduler,3000) // introduce schedulers at any point in the operator chain
+// ).subscribe(observer);
+//
 // of(1,2,3).subscribe(observer);
-console.log("synchronous log");
+// console.log("synchronous log");
 // next val:  1
 // next val:  2
 // next val:  3
@@ -102,3 +106,34 @@ console.log("synchronous log");
 // next val:  4
 // next val:  5
 // next val:  6
+
+// asap
+
+asapScheduler.schedule(() => console.log("asapScheduler"));
+
+// microtask
+queueMicrotask(() => console.log("From microtask"));
+// promise handlers utilise the microtask queue which runs after currently executed synchronous code
+Promise.resolve("From promise").then(console.log);
+
+// creation operator
+// range(1,5, asapScheduler).subscribe(observer);
+
+// locks the browser,
+// it is waiting for the microtasks to finish
+// range(1, 100000, asapScheduler).subscribe((val) => {
+//   counter.innerHTML = val;
+// });
+
+//the browser has the same behavior synchrnously
+// range(1, 100000).subscribe((val) => {
+//   counter.innerHTML = val;
+// });
+
+// 
+range(1, 100000, asyncScheduler).subscribe((val) => {
+  counter.innerHTML = val;
+});
+
+// synchronous
+console.log("Synchronous log");

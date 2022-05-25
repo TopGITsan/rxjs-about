@@ -85,3 +85,10 @@ of(1,2,3).pipe(
         - air notification will continue to be emitted imediatly
 
 
+- **asapScheduler**: 
+    - lets you schedule work on the microtask queue, executing tasks as soon as posibile
+    - similar to *queueMicrotask* or *Promise.resolve*
+    - should not treat it as asynchronous but faster and default to is use
+    - do not use microtasks for long running operations
+    - microtasks in JS run after currently executing code but will **block** *the UI like synchronous task* until they complete (queue is cleared), this also counts for microtasks that are added while others are running
+    - is not a silver bullet for asynchronous activity.

@@ -6,6 +6,7 @@ import { observer } from "./rx-observer/observer";
 import { loadingOverlay } from "./overlay/loadingOverlay";
 
 import { ObservableStore } from "./store/store";
+import { observeOn } from "rxjs/operators";
 /*
  * Any code samples you want to play with can go in this file.
  * Updates will trigger a live reload on http://localhost:1234/
@@ -85,7 +86,12 @@ cacheSubject.subscribe(observer);
 // deprecated
 // of(4,5,6, asyncScheduler).subscribe(observer);
 // use scheduled
-scheduled([4,5,6], asyncScheduler).subscribe(observer);
+// scheduled([4,5,6], asyncScheduler).subscribe(observer);
+// or
+of(4,5,6).pipe(
+  observeOn(asyncScheduler,3000) // introduce schedulers at any point in the operator chain
+).subscribe(observer);
+// 
 of(1,2,3).subscribe(observer);
 console.log("synchronous log");
 // next val:  1

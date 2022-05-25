@@ -41,3 +41,21 @@ animationFramScheduler.schedule(console.log, null, 'aframe');
 
 queueScheduler.schedule(()=> { // usefull when you need to schedule tasks inside other tasks })
 ```
+### How to use schedulers with observables
+    - the majority of static creation operators accept an optional scheduler
+    - schedule the emission of values in the middle of the operator chain by using the **obserbeOn** operator
+    - schedule when a subscription itself will occur by using the **subscribeOn** operator
+```
+// the majority of static creation operators accept an optional scheduler
+of(1,2,3, asyncScheduler).subscribe(observer);
+
+// or in the middle of the operator chain
+interval(20).pipe(
+  observeOn(animationFrameScheduler)
+).subscribe(observer);
+
+of(1,2,3).pipe(
+  subscribeOn(asyncScheduler)
+).subscribe(observer)
+```
+

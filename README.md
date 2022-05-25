@@ -94,3 +94,6 @@ of(1,2,3).pipe(
     - is not a silver bullet for asynchronous activity.
 
 - **animationFrameScheduler**: let's you schedule tasks before browser repaint to help create smooth animations
+
+- **queueScheduler**: lets you execute tasks synchronously, executing the next when the previous completes
+    - if you need to control the order of tasks

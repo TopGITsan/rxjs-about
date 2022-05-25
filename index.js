@@ -1,4 +1,14 @@
-import { animationFrameScheduler, asapScheduler, async, asyncScheduler, interval, of, range, scheduled } from "rxjs";
+import {
+  animationFrameScheduler,
+  asapScheduler,
+  async,
+  asyncScheduler,
+  interval,
+  of,
+  queueScheduler,
+  range,
+  scheduled,
+} from "rxjs";
 
 import { cacheSubject } from "./rx-observable/subject";
 import { observer } from "./rx-observer/observer";
@@ -131,14 +141,13 @@ queueMicrotask(() => console.log("From microtask"));
 //   counter.innerHTML = val;
 // });
 
-// using asap to not block the render of the counter inner HTML 
+// using asap to not block the render of the counter inner HTML
 // range(1, 100000, asyncScheduler).subscribe((val) => {
 //   counter.innerHTML = val;
 // });
 
 // synchronous
 // console.log("Synchronous log");
-
 
 // animationFrame
 
@@ -149,11 +158,24 @@ queueMicrotask(() => console.log("From microtask"));
 // },0,0)
 
 // refactor using rxjs
-interval(0, animationFrameScheduler).pipe(
-  takeWhile(val => val <= 300),
-  // tap(val=> console.log("From animationFrame", val))
-).subscribe(val => {
-  ball.style.transform = `translate3d(0, ${val}px, 0`;
+interval(0, animationFrameScheduler)
+  .pipe(
+    takeWhile((val) => val <= 300)
+    // tap(val=> console.log("From animationFrame", val))
+  )
+  .subscribe((val) => {
+    ball.style.transform = `translate3d(0, ${val}px, 0`;
+  });
+
+// queueScheduler
+queueScheduler.schedule(() => {
+  queueScheduler.schedule(() => {
+    queueScheduler.schedule(() => {
+      console.log(">> second inner Queue");
+    });
+    console.log(">> inner Queue");
+  });
+  console.log(">> first Queue");
 });
 
 // synchronous

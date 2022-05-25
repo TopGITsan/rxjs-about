@@ -1,4 +1,4 @@
-# RxJS Basics
+# RxJS Basics :star_struck:
 
 ## What is a Subject ?
 

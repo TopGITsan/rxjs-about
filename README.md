@@ -29,7 +29,7 @@
 ![shareReplay](/image/multicasting/shareReplay_operator.png)
 - multicast
 
-## Schedulers
+## Schedulers :timer_clock:
 
 ![schedulers](/image/schedulers/schedulers.png)
     
@@ -58,7 +58,10 @@ queueScheduler.schedule(()=> { // usefull when you need to schedule tasks inside
 ```
 
 ### How to use schedulers with observables
-- the majority of static creation operators accept an optional scheduler
+
+- ~~the majority of static creation operators accept an optional scheduler~~ (*deprecated*)
+    - use **scheduled** operator instead:
+    ``` scheduled([4,5,6], asyncScheduler).subscribe(observer); ```
 - schedule the emission of values in the middle of the operator chain by using the **obserbeOn** operator
 - schedule when a subscription itself will occur by using the **subscribeOn** operator
 ```
@@ -74,4 +77,11 @@ of(1,2,3).pipe(
   subscribeOn(asyncScheduler)
 ).subscribe(observer)
 ```
+
+## Types of schedulers :clock1230:
+
+- **asyncScheduler**: schedule task asynchronously with an optional delay (similar to setTimeout)
+    - if your goal is to delay operations, the **delay** operator is prefered:
+        - air notification will continue to be emitted imediatly
+
 

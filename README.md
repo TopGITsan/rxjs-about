@@ -29,6 +29,9 @@
 ![shareReplay](/image/multicasting/shareReplay_operator.png)
 - multicast
 
+### Extract commom operator logic into standalone functions
+- 
+
 ## Schedulers :timer_clock:
 
 ![schedulers](/image/schedulers/schedulers.png)

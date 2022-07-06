@@ -123,3 +123,6 @@ of(1,2,3).pipe(
 > represents synchronous groupings, ex. -(abc)--
 - complete notifications can be written line in the diagrams with the vertical bar `|`
 > represents completion, ex. (abc|)
+
+### Configure emitted values
+- the *cold*, *hot* and *toBe* helper methods provided by RxJS accept a second argument letting you swap out the alphanumeric values which appear in your diagram with whatever values your test requires

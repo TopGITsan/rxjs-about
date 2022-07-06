@@ -40,7 +40,7 @@
 - are used with operators and subscriptions in order to influence how and when your code is executed ( when to emit or subscribe ) :
     - observeOn, subscribeOn
 - are used for time based operations and operators
-- are user in testing
+- are used in testing
 
 - each scheduler accepts 3 arguments:
     - work (the function to invoke)
@@ -100,3 +100,26 @@ of(1,2,3).pipe(
 
 - **queueScheduler**: lets you execute tasks synchronously, executing the next when the previous completes
     - if you need to control the order of tasks
+
+
+# Testing RxJS
+- marble testing
+- subscribe and assert pattern
+
+## Marble Testing
+
+> The most effective and most expressive way to test your streams
+
+> Marble testing is derived from the idea of marble diagrams
+
+- we can write marble diagrams in ASCII that represent observables and their expected outcomes
+- to represent the passing of time we can use a dash `-`:
+> each dash represents aframe of virtual time
+- alfanumeric `[a-z0-9]` values represent the emitted values:
+> represents emitted values, ex -a--b-
+- errors are represented by the `#` sign:
+> represents errors, ex -a--b-#
+- groupings of sinchronous values can be written within parentheses `()`
+> represents synchronous groupings, ex. -(abc)--
+- complete notifications can be written line in the diagrams with the vertical bar `|`
+> represents completion, ex. (abc|)

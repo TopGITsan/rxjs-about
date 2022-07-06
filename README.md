@@ -121,8 +121,18 @@ of(1,2,3).pipe(
 > represents errors, ex -a--b-#
 - groupings of sinchronous values can be written within parentheses `()`
 > represents synchronous groupings, ex. -(abc)--
-- complete notifications can be written line in the diagrams with the vertical bar `|`
+- complete notifications can be written with a line in the diagrams with the vertical bar `|`
 > represents completion, ex. (abc|)
+- subscription point can be marked with a `^`
+> represents subscription, ex. ^----
+- unsubscription point can be marked with a `!`
+> represents the unsubscribe frame, ex ----!
 
 ### Configure emitted values
 - the *cold*, *hot* and *toBe* helper methods provided by RxJS accept a second argument letting you swap out the alphanumeric values which appear in your diagram with whatever values your test requires
+
+### Confirm subscriptions points
+- on top of testing that emissions of an observable match both in value and frame we can also test that observavles contained in combine streams are subscribed and unsubscribed to at the appropriate time.
+
+- we can utilize the *expectSubscriptions* helper method and *subscriptions* property on our observables
+`expectSubscriptions(sourceTwo$.subscriptions).toBe(sourceTwoExpectedSub);`

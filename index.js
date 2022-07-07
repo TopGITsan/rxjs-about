@@ -1,15 +1,10 @@
 import {
   animationFrameScheduler,
   asapScheduler,
-  async,
   asyncScheduler,
   interval,
   of,
   queueScheduler,
-  range,
-  scheduled,
-  throwError,
-  timer,
 } from "rxjs";
 
 import { cacheSubject } from "./rx-observable/subject";
@@ -19,19 +14,13 @@ import { loadingOverlay } from "./overlay/loadingOverlay";
 
 import { ObservableStore } from "./store/store";
 
-import { counter } from "./counter/counter";
 import { ball } from "./ball/ball";
 import { clickError$ } from "./click-document/click-document";
 
+import { typeahead$ } from "./input/input";
+
 import {
-  catchError,
-  mergeMap,
-  mergeMapTo,
-  observeOn,
-  retryWhen,
-  subscribeOn,
   takeWhile,
-  tap,
 } from "rxjs/operators";
 /*
  * Any code samples you want to play with can go in this file.
@@ -197,3 +186,6 @@ console.log("Synchronous log");
 
 // retry strategy, generally on POST
 clickError$.subscribe(console.log);
+
+// input typeahead
+typeahead$.subscribe(console.log);

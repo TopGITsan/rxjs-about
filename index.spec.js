@@ -1,5 +1,5 @@
 import { TestScheduler } from "rxjs/testing/index.js";
-import { map } from "rxjs/operators/index.js";
+import { map, take } from "rxjs/operators/index.js";
 import { concat } from "rxjs/index.js";
 
 describe("Marble testing in RxJS", () => {
@@ -51,6 +51,18 @@ describe("Marble testing in RxJS", () => {
       expectObservable(final$).toBe(expected);
       expectSubscriptions(source$.subscriptions).toBe(sourceOneExpectedSub);
       expectSubscriptions(sourceTwo$.subscriptions).toBe(sourceTwoExpectedSub);
+    });
+  });
+
+  it("should let you test hot observables", () => {
+    testScheduler.run((helpers) => {
+      const { hot, expectObservable } = helpers;
+
+      const source$ = hot("--a-b-^-c");
+      const final$ =  source$.pipe(take(1)); // take operator completes the stream
+      const expected =          "--(c|)"; // emission and completion are synchronous
+
+      expectObservable(final$).toBe(expected);
     });
   });
 });

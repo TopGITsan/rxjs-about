@@ -140,4 +140,21 @@ describe("typeahead", () => {
       expectObservable(final$).toBe(expected, { b: searchTerm });
     });
   });
+
+  it("should not emit duplicate values in a row", () => {
+    testScheduler.run((helpers) => {
+      const { cold, expectObservable } = helpers;
+      const searchTerm = "first";
+      
+      const source$ = cold("a 250ms b", {
+        a: { target: { value: "first" } },
+        b: { target: { value: "first" } },
+      });
+      const final$ = source$.pipe(fakeAjaxTypeahead());
+
+      const expected = "500ms b";
+
+      expectObservable(final$).toBe(expected, { b: searchTerm });
+    });
+  });
 });

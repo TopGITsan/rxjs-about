@@ -1,6 +1,6 @@
 import { TestScheduler } from "rxjs/testing/index.js";
-import { delay, map, take } from "rxjs/operators/index.js";
-import { concat, from } from "rxjs/index.js";
+import { catchError, delay, map, take } from "rxjs/operators/index.js";
+import { concat, from, of } from "rxjs/index.js";
 
 import { fakeAjaxTypeahead } from "./input/operators.js";
 
@@ -155,6 +155,40 @@ describe("typeahead", () => {
       const expected = "500ms b";
 
       expectObservable(final$).toBe(expected, { b: searchTerm });
+    });
+  });
+
+  it("should let you test errors and error messages", () => {
+    testScheduler.run((helpers) => {
+      const { expectObservable } = helpers;
+
+      const source$ = of({ firstName: "Agent", lastName: "Smith" }, null).pipe(
+        map((o) => `${o.firstName} ${o.lastName}`),
+        catchError(() => {
+          throw "Invalid User!";
+        })
+      );
+
+      const expected = '(a#'; // use the # to represent an ERROR notification
+
+      expectObservable(source$).toBe(expected, { a: "Agent Smith" }, "Invalid User!"); // confirm that the error is thrown by providing the error message as the third argument
+    });
+  });
+
+  it("should let you test errors and error messages", () => {
+    testScheduler.run((helpers) => {
+      const { expectObservable } = helpers;
+
+      const source$ = of({ firstName: "Agent", lastName: "Smith" }, null).pipe(
+        map((o) => `${o.firstName} ${o.lastName}`),
+        catchError(() => {
+          throw { message: "Invalid User!" };
+        })
+      );
+
+      const expected = '(a#';
+
+      expectObservable(source$).toBe(expected, { a: "Agent Smith" }, { message: "Invalid User!" });
     });
   });
 });

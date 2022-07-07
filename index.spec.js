@@ -1,6 +1,6 @@
 import { TestScheduler } from "rxjs/testing/index.js";
 import { catchError, delay, map, take } from "rxjs/operators/index.js";
-import { concat, from, of } from "rxjs/index.js";
+import { concat, from, interval, of } from "rxjs/index.js";
 
 import { fakeAjaxTypeahead } from "./input/operators.js";
 
@@ -189,6 +189,22 @@ describe("typeahead", () => {
       const expected = '(a#';
 
       expectObservable(source$).toBe(expected, { a: "Agent Smith" }, { message: "Invalid User!" });
+    });
+  });
+
+  it("should let you test snapshots of streams that do not complete", () => {
+    testScheduler.run((helpers) => {
+      const { expectObservable } = helpers;
+      const source$ = interval(1000).pipe(map((val) => `${val + 1} sec`));
+
+      const expected = "1s a 999ms b 999ms c";
+      const unsubscribe = "4s !";
+
+      expectObservable(source$, unsubscribe).toBe(expected, {
+        a: "1 sec",
+        b: "2 sec",
+        c: "3 sec",
+      });
     });
   });
 });

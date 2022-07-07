@@ -2,6 +2,8 @@ import { TestScheduler } from "rxjs/testing/index.js";
 import { delay, map, take } from "rxjs/operators/index.js";
 import { concat, from } from "rxjs/index.js";
 
+import { fakeAjaxTypeahead } from "./input/operators.js";
+
 describe("Marble testing in RxJS", () => {
   let testScheduler;
 
@@ -59,15 +61,15 @@ describe("Marble testing in RxJS", () => {
       const { hot, expectObservable } = helpers;
 
       const source$ = hot("--a-b-^-c");
-      const final$ =  source$.pipe(take(1)); // take operator completes the stream
+      const final$ = source$.pipe(take(1)); // take operator completes the stream
       const expected =          "--(c|)"; // emission and completion are synchronous
 
       expectObservable(final$).toBe(expected);
     });
   });
 
-  it("should let you test synchronous operations",()=>{
-    testScheduler.run(helpers => {
+  it("should let you test synchronous operations", () => {
+    testScheduler.run((helpers) => {
       const { expectObservable } = helpers;
       const source$ = from([1, 2, 3, 4, 5]);
 
@@ -76,11 +78,11 @@ describe("Marble testing in RxJS", () => {
       const expected = "(abcde|)";
 
       expectObservable(source$).toBe(expected, { a: 1, b: 2, c: 3, d: 4, e: 5 });
-    })
-  })
+    });
+  });
 
-  it("should let you test asynchronous operations",()=>{
-    testScheduler.run(helpers => {
+  it("should let you test asynchronous operations", () => {
+    testScheduler.run((helpers) => {
       const { expectObservable } = helpers;
       const source$ = from([1, 2, 3, 4, 5]);
       // all tests run within the testScheduler.run method will automatically use the testScheduler simulating the passing of time with virtual time frames
@@ -97,6 +99,45 @@ describe("Marble testing in RxJS", () => {
       const expected = "1s (abcde|)";
 
       expectObservable(final$).toBe(expected, { a: 1, b: 2, c: 3, d: 4, e: 5 });
-    })
-  })
+    });
+  });
+});
+
+describe("typeahead", () => {
+  let testScheduler;
+  beforeEach(() => {
+    testScheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  it("should debounce input by 200ms", () => {
+    testScheduler.run((helpers) => {
+      const { cold, expectObservable } = helpers;
+      const searchTerm = "test";
+      const source$ = cold("a", { a: { target: { value: searchTerm } } });
+      const final$ = source$.pipe(fakeAjaxTypeahead());
+
+      const expected = "500ms a";
+
+      expectObservable(final$).toBe(expected, { a: searchTerm });
+    });
+  });
+
+  it("should cancel active request if another value is emitted", () => {
+    testScheduler.run((helpers) => {
+      const { cold, expectObservable } = helpers;
+      const searchTerm = "second";
+      
+      const source$ = cold("a 250ms b", {
+        a: { target: { value: "first" } },
+        b: { target: { value: "second" } },
+      });
+      const final$ = source$.pipe(fakeAjaxTypeahead());
+
+      const expected = "751ms b";
+
+      expectObservable(final$).toBe(expected, { b: searchTerm });
+    });
+  });
 });

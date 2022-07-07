@@ -1,5 +1,5 @@
 import { TestScheduler } from "rxjs/testing/index.js";
-import { map, take } from "rxjs/operators/index.js";
+import { delay, map, take } from "rxjs/operators/index.js";
 import { concat, from } from "rxjs/index.js";
 
 describe("Marble testing in RxJS", () => {
@@ -76,6 +76,27 @@ describe("Marble testing in RxJS", () => {
       const expected = "(abcde|)";
 
       expectObservable(source$).toBe(expected, { a: 1, b: 2, c: 3, d: 4, e: 5 });
+    })
+  })
+
+  it("should let you test asynchronous operations",()=>{
+    testScheduler.run(helpers => {
+      const { expectObservable } = helpers;
+      const source$ = from([1, 2, 3, 4, 5]);
+      // all tests run within the testScheduler.run method will automatically use the testScheduler simulating the passing of time with virtual time frames
+      // we can model asynchronous behaviour within our diagrams using dashes to simulate one frame of time or
+      // for longer chunck of time using the time progression syntax with the value
+      // delay 10 ms
+      // const final$ = source$.pipe(delay(10));
+      // const expected = "----------(abcde|)";
+      // delay 200 ms
+      // const final$ = source$.pipe(delay(200));
+      // const expected = "200ms (abcde|)";
+      // delay 1s
+      const final$ = source$.pipe(delay(1000));
+      const expected = "1s (abcde|)";
+
+      expectObservable(final$).toBe(expected, { a: 1, b: 2, c: 3, d: 4, e: 5 });
     })
   })
 });
